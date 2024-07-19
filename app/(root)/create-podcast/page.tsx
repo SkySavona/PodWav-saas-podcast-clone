@@ -117,7 +117,7 @@ const CreatePodcast = () => {
                 >
                   <SelectValue
                     placeholder="Select AI Voice"
-                    className="placeholder:text-gray-1"
+                    className="placeholder:text-gray-1 focus-visible:ring-offset-blue-3"
                   />
                 </SelectTrigger>
                 <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus-visible:ring-offset-blue-3">
@@ -164,14 +164,20 @@ const CreatePodcast = () => {
           <div className="flex flex-col pt-10 text-white-1">
             <GeneratePodcast
               setAudioStorageId={setAudioStorageId}
-              setAudioUrl={setAudioUrl}
-              voiceType={voiceType}
+              setAudio={setAudioUrl}
+              voiceType={voiceType!}
               audio={audioUrl}
               voicePrompt={voicePrompt}
               setVoicePrompt={setVoicePrompt}
               setAudioDuration={setAudioDuration}
             />
-            <GenerateThumbnail />
+            <GenerateThumbnail
+              setImage={setImageUrl}
+              setImageStorageId={setImageStorageId}
+              image={imageUrl}
+              imagePrompt={imagePrompt}
+              setImagePrompt={setImagePrompt}
+            />
             <div className="mt-10 w-full">
               <Button
                 type="submit"
