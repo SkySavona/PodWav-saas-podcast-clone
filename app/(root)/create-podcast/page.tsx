@@ -31,8 +31,12 @@ import GenerateThumbnail from "@/components/GenerateThumbnail";
 import GeneratePodcast from "@/components/GeneratePodcast";
 import { Loader } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const voiceCategories = ["Alloy", "Shimmer", "Nova", "Echo", "Fable", "Onyx"];
+const { toast } = useToast();
 
 const formSchema = z.object({
   podcastTitle: z.string().min(2),
@@ -56,7 +60,8 @@ const CreatePodcast = () => {
   const [voicePrompt, setVoicePrompt] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // 1. Define your form.
+  const CreatePodcast = useMutation(api.podcasts.createPodcast);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,13 +70,44 @@ const CreatePodcast = () => {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      setIsSubmitting(true);
+      if (!audioUrl || !imageUrl || !voiceType) {
+        toast({
+          title: "Please generate audio and image, and select a voice type",
+        });
+        setIsSubmitting(false);
+        return; // Exit the function early if requirements are not met
+      }
 
+      await CreatePodcast({
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        imageUrl,
+        audioUrl,
+        audioStorageId: audioStorageId!,
+        voiceType,
+        voicePrompt,
+        imagePrompt,
+        imageStorageId: imageStorageId!,
+        views: 0,
+        audioDuration,
+      });
+
+      toast({
+        title: "Podcast created successfully",
+      });
+      setIsSubmitting(false);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error creating podcast",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+    }
+  }
   return (
     <section className="mt-10 flex flex-col ">
       <h1 className="text-20 font-bold text-white-1">Create Podcast</h1>
