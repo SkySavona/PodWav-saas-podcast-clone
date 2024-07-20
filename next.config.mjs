@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "disciplined-hummingbird-332.convex.cloud",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
     ],
   },
 };

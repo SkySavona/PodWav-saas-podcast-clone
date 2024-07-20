@@ -85,7 +85,7 @@ html {
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none ;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */

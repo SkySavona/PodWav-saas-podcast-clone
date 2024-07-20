@@ -24,7 +24,8 @@ const Home = () => {
                 key={_id}
                 imgURL={imageUrl as string}
                 title={podcastTitle}
-                description={podcastDescription} podcastId={0}                // podcastId={_id}
+                description={podcastDescription} 
+                podcastId={_id}                // podcastId={_id}
               />
             )
           )}
