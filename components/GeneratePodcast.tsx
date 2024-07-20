@@ -80,7 +80,7 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
           AI Prompt to Generate Podcast
         </Label>
         <Textarea 
-          className="input-class font-light focus-visible:ring-offset-blue-3"
+          className="input-class font-light !text-white-1 focus-visible:ring-offset-blue-3  focus-visible:text-white-1"
           placeholder='Provide text to generate audio'
           rows={5}
           value={props.voicePrompt}

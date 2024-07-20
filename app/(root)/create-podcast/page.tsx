@@ -35,8 +35,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-const voiceCategories = ["Alloy", "Shimmer", "Nova", "Echo", "Fable", "Onyx"];
-const { toast } = useToast();
+const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
 
 const formSchema = z.object({
   podcastTitle: z.string().min(2),
@@ -44,6 +43,8 @@ const formSchema = z.object({
 });
 
 const CreatePodcast = () => {
+  const { toast } = useToast();
+
   const [imagePrompt, setImagePrompt] = useState("");
   const [imageStorageId, setImageStorageId] = useState<Id<"_storage"> | null>(
     null
@@ -60,7 +61,7 @@ const CreatePodcast = () => {
   const [voicePrompt, setVoicePrompt] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const CreatePodcast = useMutation(api.podcasts.createPodcast);
+  const createPodcast = useMutation(api.podcasts.createPodcast);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,15 +74,15 @@ const CreatePodcast = () => {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true);
-      if (!audioUrl || !imageUrl || !voiceType) {
+      if (!data.podcastTitle || !data.podcastDescription || !audioUrl || !imageUrl || !voiceType) {
         toast({
-          title: "Please generate audio and image, and select a voice type",
+          title: "Please fill all required fields and generate audio and image",
         });
         setIsSubmitting(false);
-        return; // Exit the function early if requirements are not met
+        return;
       }
 
-      await CreatePodcast({
+      await createPodcast({
         podcastTitle: data.podcastTitle,
         podcastDescription: data.podcastDescription,
         imageUrl,
@@ -108,6 +109,7 @@ const CreatePodcast = () => {
       setIsSubmitting(false);
     }
   }
+
   return (
     <section className="mt-10 flex flex-col ">
       <h1 className="text-20 font-bold text-white-1">Create Podcast</h1>
@@ -127,8 +129,8 @@ const CreatePodcast = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="input-class focus-visible:ring-offset-blue-3"
-                      placeholder="PodWav Pro Podcast"
+                      className="input-class !text-white-1 focus-visible:ring-offset-blue-3 focus-visible:text-white-1 placeholder:text-gray-1"
+  placeholder="PodWav Pro Podcast"
                       {...field}
                     />
                   </FormControl>
@@ -148,7 +150,7 @@ const CreatePodcast = () => {
               >
                 <SelectTrigger
                   className={cn(
-                    "text-16 w-full border-none bg-black-1 text-gray-1 focus-visible:ring-offset-blue-3"
+                    "text-16 w-full border-none bg-black-1 text-white-1 focus-visible:ring-offset-blue-3"
                   )}
                 >
                   <SelectValue
@@ -186,7 +188,7 @@ const CreatePodcast = () => {
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      className="input-class focus-visible:ring-offset-blue-3"
+                      className="input-class !text-white-1 focus-visible:ring-offset-blue-3 placeholder:text-gray-1 focus-visible:text-white-1"
                       placeholder="Write a short podcast description"
                       {...field}
                     />
@@ -198,6 +200,7 @@ const CreatePodcast = () => {
             />
           </div>
           <div className="flex flex-col pt-10 text-white-1">
+              <div className="items-center">
             <GeneratePodcast
               setAudioStorageId={setAudioStorageId}
               setAudio={setAudioUrl}
@@ -214,6 +217,7 @@ const CreatePodcast = () => {
               imagePrompt={imagePrompt}
               setImagePrompt={setImagePrompt}
             />
+            </div>
             <div className="mt-10 w-full">
               <Button
                 type="submit"

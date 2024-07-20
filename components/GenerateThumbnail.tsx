@@ -7,7 +7,7 @@ import { GenerateThumbnailProps } from "@/types";
 import { Loader } from "lucide-react";
 import { Input } from "./ui/input";
 import Image from "next/image";
-import { useToast } from "./ui/use-toast";
+import { useToast } from "./ui/use-toast"
 import { useAction, useMutation } from "convex/react";
 import { useUploadFiles } from "@xixixao/uploadstuff/react";
 import { api } from "@/convex/_generated/api";
@@ -115,7 +115,7 @@ const GenerateThumbnail = ({
               AI Prompt to Generate Thumbnail
             </Label>
             <Textarea
-              className="input-class font-light focus-visible:ring-offset-blue-3"
+              className="input-class font-light focus-visible:ring-offset-blue-3 placeholder:text-gray-1 focus-visible:text-white-1 !text-white-1"
               placeholder="Provide text to generate audio"
               rows={5}
               value={imagePrompt}
