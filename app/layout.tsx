@@ -20,12 +20,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ConvexClerkProvider>
-      <html lang="en">
-        <AudioProvider>
-          <body className={manrope.className}>{children}</body>
-        </AudioProvider>
-      </html>
-    </ConvexClerkProvider>
+    <html lang="en">
+      <body className={manrope.className}>
+        <ConvexClerkProvider>
+          <AudioProvider>
+            {children}
+          </AudioProvider>
+        </ConvexClerkProvider>
+      </body>
+    </html>
   );
 }
