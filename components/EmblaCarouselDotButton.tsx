@@ -1,9 +1,4 @@
-import React, {
-  ComponentPropsWithRef,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { EmblaCarouselType } from "embla-carousel";
 import { cn } from "@/lib/utils";
 
@@ -52,13 +47,12 @@ export const useDotButton = (
   };
 };
 
-type PropType = ComponentPropsWithRef<"button">;
 type DotButtonProps = {
   selected: boolean;
   onClick: () => void;
 };
 
-export const DotButton: React.FC<PropType> = ({ selected, onClick }) => {
+export const DotButton: React.FC<DotButtonProps> = ({ selected, onClick }) => {
   return (
     <button
       type="button"

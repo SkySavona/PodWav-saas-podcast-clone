@@ -8,7 +8,7 @@ const Header = ({ headerTitle, titleClassName}: { headerTitle?: string; titleCla
       {headerTitle ? (
         <h1 className={cn('text-18 pb-5 font-bold text-white-1', titleClassName)}>{headerTitle}</h1>
       ): <div />}
-      <Link href="/discover" className="text-16 pb-5 font-semibold text-blue-3">
+      <Link href="/discover" className="text-16 pb-5 font-semibold text-blue-3 hover:text-white-1 transition-colors duration-300 ease-in-out" >
         See all
       </Link>
     </header>

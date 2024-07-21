@@ -15,7 +15,6 @@ const Home = () => {
     <div className="mt-0 flex flex-col gap-9">
       <section className="flex flex-col gap-5 pt-10">
         <h1 className="text-20 font-bold text-white-1">Trending Podcasts</h1>
-        {/* <Button className="text-white-1 bg-blue-3">Button</Button> */}
 
         <div className="podcast_grid">
           {trendingPodcasts?.map(
@@ -25,7 +24,7 @@ const Home = () => {
                 imgURL={imageUrl as string}
                 title={podcastTitle}
                 description={podcastDescription} 
-                podcastId={_id}                // podcastId={_id}
+                podcastId={_id}               
               />
             )
           )}

@@ -35,8 +35,6 @@ const config = {
           6: "#24272C",
         },
         blue: {
-          1: "#0A2543",
-          2: "#1C354F",
           3: "#1899C7",
         },
         gray: {
@@ -57,8 +55,11 @@ const config = {
           to: { height: "0" },
         },
         click: {
-          "0%": { transform: "scale(1)" },
-          "100%": { transform: "scale(0.95)" },
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "100%": {
+            transform: "scale(0.95)",
+            opacity: "0.4",
+          },
         },
       },
       animation: {

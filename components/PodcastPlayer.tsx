@@ -16,9 +16,10 @@ const PodcastPlayer = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(0.25);
-  const { audio } = useAudio();
+  const { audio, setAudio } = useAudio();
   const [isForwardAnimating, setIsForwardAnimating] = useState(false);
   const [isRewindAnimating, setIsRewindAnimating] = useState(false);
+  const [isCloseAnimating, setIsCloseAnimating] = useState(false);
 
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {
@@ -71,6 +72,14 @@ const PodcastPlayer = () => {
     if (audioRef.current) {
       audioRef.current.volume = newVolume;
     }
+  };
+
+  const handleClose = () => {
+    setIsCloseAnimating(true);
+    setTimeout(() => {
+      setAudio(undefined);
+      setIsCloseAnimating(false);
+    }, 300);
   };
 
   useEffect(() => {
@@ -128,7 +137,7 @@ const PodcastPlayer = () => {
       <Progress
         value={(currentTime / duration) * 100}
         className="w-full"
-        max={duration}
+        max={Math.max(duration, 0.01)} // Ensure
       />
       <section className="glassmorphism-black flex h-[112px] w-full items-center justify-between px-4 max-md:justify-center max-md:gap-5 md:px-12">
         <audio
@@ -206,10 +215,20 @@ const PodcastPlayer = () => {
               step="0.01"
               value={volume}
               onChange={handleVolumeChange}
-              className="w-24 cursor-pointer appearance-none bg-gray-1 h-1 rounded-full outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white-1"
+              className="w-24 mt-3 ml-5 cursor-pointer appearance-none bg-gray-1 h-1 rounded-full outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white-1"
               style={{
                 background: `linear-gradient(to right, #FFFFFF ${volume * 100}%, #71788B ${volume * 100}%)`,
               }}
+            />
+            <Image
+              src="/icons/close.svg"
+              width={24}
+              height={24}
+              alt="close"
+              onClick={handleClose}
+              className={`cursor-pointer transition-opacity w-5 h-5 absolute right-4 top-4 text-white-3 hover:text-white-4 ${
+                isCloseAnimating ? "animate-click opacity-50" : "opacity-100"
+              }`}
             />
           </div>
         </div>

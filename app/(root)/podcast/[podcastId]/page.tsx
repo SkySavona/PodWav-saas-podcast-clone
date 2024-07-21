@@ -2,9 +2,9 @@
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import PodcastDetailPlayer from "@/components/PodcastDetailPlayer";
 import LoaderSpinner from "@/components/LoaderSpinner";
 import PodcastCard from "@/components/PodcastCard";
@@ -16,18 +16,24 @@ const PodcastDetails = ({
 }: {
   params: { podcastId: Id<"podcasts"> };
 }) => {
-  const {user} = useUser();
-
+  const { user } = useUser();
   const podcast = useQuery(api.podcasts.getPodcastById, { podcastId });
-
   const similarPodcasts = useQuery(api.podcasts.getPodcastByVoiceType, {
     podcastId,
   });
- 
-  const isOwner = user?.id === podcast?.authorId;
-  if (!similarPodcasts || !podcast) return;
+  const updateViews = useMutation(api.podcasts.updatePodcastViews);
 
-  <LoaderSpinner />;
+  const isOwner = user?.id === podcast?.authorId;
+  const viewUpdated = useRef(false);
+
+  useEffect(() => {
+    if (podcast && user && !isOwner && !viewUpdated.current) {
+      updateViews({ podcastId });
+      viewUpdated.current = true;
+    }
+  }, [podcast, user, isOwner, podcastId, updateViews]);
+
+  if (!similarPodcasts || !podcast) return <LoaderSpinner />;
 
   return (
     <section className="flex flex-col w-full">
@@ -40,14 +46,16 @@ const PodcastDetails = ({
             height={24}
             alt="headphone"
           />
-          <h2 className="text-16 font-bold pt-2 text-white-1">{podcast?.views}</h2>
+          <h2 className="text-16 font-bold pt-2 text-white-1">
+            {podcast?.views}
+          </h2>
         </figure>
       </header>
 
       <PodcastDetailPlayer
-      isOwner={isOwner}
-      podcastId={podcast._id}
-      {...podcast}
+        isOwner={isOwner}
+        podcastId={podcast._id}
+        {...podcast}
       />
 
       <p className="text-16 pb-8 pt-[45px] font-medium max-md:text-center text-white-2">
@@ -71,7 +79,9 @@ const PodcastDetails = ({
       </div>
 
       <section className="mt-8 flex flex-col placeholder:gap-5">
-        <h1 className="text-20 font-bold text-white-1 pb-5">Similar Podcasts</h1>
+        <h1 className="text-20 font-bold text-white-1 pb-5">
+          Similar Podcasts
+        </h1>
 
         {similarPodcasts && similarPodcasts.length > 0 ? (
           <div className="podcast_grid">
@@ -88,12 +98,13 @@ const PodcastDetails = ({
             )}
           </div>
         ) : (
-          <><EmptyState 
-          title= "No similar podcasts found"
-          buttonLink="/discover"
-          buttonText="Discover more podcasts"
-          
-          /></>
+          <>
+            <EmptyState
+              title="No similar podcasts found"
+              buttonLink="/discover"
+              buttonText="Discover more podcasts"
+            />
+          </>
         )}
       </section>
     </section>
