@@ -40,7 +40,7 @@ const PodcastDetails = ({
             height={24}
             alt="headphone"
           />
-          <h2 className="text-16 font-bold text-white-1">{podcast?.views}</h2>
+          <h2 className="text-16 font-bold pt-2 text-white-1">{podcast?.views}</h2>
         </figure>
       </header>
 
@@ -71,7 +71,7 @@ const PodcastDetails = ({
       </div>
 
       <section className="mt-8 flex flex-col placeholder:gap-5">
-        <h1 className="text-20 font-bold text-white-1">Similar Podcasts</h1>
+        <h1 className="text-20 font-bold text-white-1 pb-5">Similar Podcasts</h1>
 
         {similarPodcasts && similarPodcasts.length > 0 ? (
           <div className="podcast_grid">
@@ -92,6 +92,7 @@ const PodcastDetails = ({
           title= "No similar podcasts found"
           buttonLink="/discover"
           buttonText="Discover more podcasts"
+          
           /></>
         )}
       </section>

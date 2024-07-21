@@ -74,9 +74,14 @@ const CreatePodcast = () => {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true);
-      if (!data.podcastTitle || !data.podcastDescription || !audioUrl || !imageUrl || !voiceType) {
+      if (
+        !data.podcastTitle ||
+        !data.podcastDescription ||
+        (!audioUrl && (!voiceType || !voicePrompt)) ||
+        (!imageUrl && !imagePrompt)
+      ) {
         toast({
-          title: "Please fill all required fields and generate audio and image",
+          title: "Please fill all required fields.",
         });
         setIsSubmitting(false);
         return;
@@ -97,13 +102,14 @@ const CreatePodcast = () => {
       });
 
       toast({
-        title: "Podcast created successfully",
+        title: "Created Successfully.",
+        variant: "primary",
       });
       setIsSubmitting(false);
     } catch (error) {
       console.error(error);
       toast({
-        title: "Error creating podcast",
+        title: "Error creating podcast.",
         variant: "destructive",
       });
       setIsSubmitting(false);
@@ -129,8 +135,8 @@ const CreatePodcast = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="input-class !text-white-1 focus-visible:ring-offset-blue-3 focus-visible:text-white-1 placeholder:text-gray-1"
-  placeholder="PodWav Pro Podcast"
+                      className="input-class !text-white-1 focus-visible:ring-offset-blue-3 placeholder:text-gray-1"
+                      placeholder="PodWav Pro Podcast"
                       {...field}
                     />
                   </FormControl>
@@ -200,38 +206,47 @@ const CreatePodcast = () => {
             />
           </div>
           <div className="flex flex-col pt-10 text-white-1">
-              <div className="items-center">
-            <GeneratePodcast
-              setAudioStorageId={setAudioStorageId}
-              setAudio={setAudioUrl}
-              voiceType={voiceType!}
-              audio={audioUrl}
-              voicePrompt={voicePrompt}
-              setVoicePrompt={setVoicePrompt}
-              setAudioDuration={setAudioDuration}
-            />
-            <GenerateThumbnail
-              setImage={setImageUrl}
-              setImageStorageId={setImageStorageId}
-              image={imageUrl}
-              imagePrompt={imagePrompt}
-              setImagePrompt={setImagePrompt}
-            />
+            <div className="items-center">
+              <GeneratePodcast
+                setAudioStorageId={setAudioStorageId}
+                setAudio={setAudioUrl}
+                voiceType={voiceType!}
+                audio={audioUrl}
+                voicePrompt={voicePrompt}
+                setVoicePrompt={setVoicePrompt}
+                setAudioDuration={setAudioDuration}
+              />
+              <GenerateThumbnail
+                setImage={setImageUrl}
+                setImageStorageId={setImageStorageId}
+                image={imageUrl}
+                imagePrompt={imagePrompt}
+                setImagePrompt={setImagePrompt}
+              />
             </div>
             <div className="mt-10 w-full">
-              <Button
-                type="submit"
-                className="text-16 w-full bg-blue-3 py-4 font-extrabold text-white-1 transtion-all duration-500 hover:bg-black-1"
-              >
-                {isSubmitting ? (
-                  <>
-                    Submitting
-                    <Loader size={20} className="animate-spin ml-2" />
-                  </>
-                ) : (
-                  "Submit & Publish Podcast"
-                )}
-              </Button>
+              {!imageUrl || !audioUrl ? (
+                <Button
+                  className="text-16 w-full bg-gray-500 py-4 font-extrabold text-white-1 cursor-not-allowed"
+                  disabled
+                >
+                  Preparing Submission...
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  className="text-16 w-full bg-blue-3 py-4 font-extrabold text-white-1 transtion-all duration-500 hover:bg-black-1"
+                >
+                  {isSubmitting ? (
+                    <>
+                      Submitting
+                      <Loader size={20} className="animate-spin ml-2" />
+                    </>
+                  ) : (
+                    "Submit & Publish Podcast"
+                  )}
+                </Button>
+              )}
             </div>
           </div>
         </form>

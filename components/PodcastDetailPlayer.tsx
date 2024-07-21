@@ -86,13 +86,13 @@ const PodcastDetailPlayer = ({
                 alt="Caster icon"
                 className="size-[30px] rounded-full object-cover"
               />
-              <h2 className="text-16 font-normal text-white-3">{author}</h2>
+              <h2 className="text-16 font-normal text-white-2">{author}</h2>
             </figure>
           </article>
 
           <Button
             onClick={handlePlay}
-            className="text-16 w-full max-w-[250px] bg-orange-1 font-extrabold text-white-1"
+            className="text-16 w-full max-w-[250px] bg-blue-3 font-extrabold text-white-1"
           >
             <Image
               src="/icons/Play.svg"

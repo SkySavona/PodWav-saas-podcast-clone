@@ -7,7 +7,7 @@ import { GenerateThumbnailProps } from "@/types";
 import { Loader } from "lucide-react";
 import { Input } from "./ui/input";
 import Image from "next/image";
-import { useToast } from "./ui/use-toast"
+import { useToast } from "./ui/use-toast";
 import { useAction, useMutation } from "convex/react";
 import { useUploadFiles } from "@xixixao/uploadstuff/react";
 import { api } from "@/convex/_generated/api";
@@ -42,7 +42,7 @@ const GenerateThumbnail = ({
       setImage(imageUrl!);
       setImageLoading(false);
       toast({
-        title: "Thumbnail generated successfully",
+        title: "Thumbnail generated successfully.",
       });
     } catch (error) {
       console.log(error);
@@ -54,18 +54,26 @@ const GenerateThumbnail = ({
   };
 
   const generateImage = async () => {
+    setImageLoading(true);
     try {
       const response = await handleGenerateThumbnail({ prompt: imagePrompt });
-      const blob = new Blob([response], { type: "image/png" });
-      handleImage(blob, "thumbnail-${uuidv4()}");
+      if (response) {
+        const blob = new Blob([response], { type: "image/png" });
+        await handleImage(blob, `thumbnail-${uuidv4()}.png`);
+      } else {
+        throw new Error("No response from image generation.");
+      }
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error generating thumbnail",
+        title: "Error generating thumbnail.",
         variant: "destructive",
       });
+    } finally {
+      setImageLoading(false);
     }
   };
+
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -78,7 +86,7 @@ const GenerateThumbnail = ({
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error uploading image",
+        title: "Error uploading image.",
         variant: "destructive",
       });
     }
@@ -116,7 +124,7 @@ const GenerateThumbnail = ({
             </Label>
             <Textarea
               className="input-class font-light focus-visible:ring-offset-blue-3 placeholder:text-gray-1 focus-visible:text-white-1 !text-white-1"
-              placeholder="Provide text to generate audio"
+              placeholder="Provide text to generate thumbnail"
               rows={5}
               value={imagePrompt}
               onChange={(e) => setImagePrompt(e.target.value)}
@@ -124,7 +132,7 @@ const GenerateThumbnail = ({
           </div>
           <div className="w-full max-w-[200px]">
             <Button
-              type="submit"
+              type="button"
               className="text-16 bg-blue-3 py-4 font-bold text-white-1"
               onClick={generateImage}
             >

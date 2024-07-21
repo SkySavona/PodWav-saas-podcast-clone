@@ -35,7 +35,7 @@ const EmptyState = ({
               height={20}
               alt="discover"
             />
-            <h1 className="text-16 font-extrabold text-white-1">
+            <h1 className="text-16 font-bold text-white-1">
               {buttonText}
             </h1>
           </Link>
