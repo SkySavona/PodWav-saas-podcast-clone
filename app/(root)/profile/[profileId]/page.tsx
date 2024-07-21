@@ -31,9 +31,16 @@ const ProfilePage = ({
       </h1>
       <div className="mt-6 flex flex-col gap-6 max-md:items-center md:flex-row">
         <ProfileCard
-          podcastData={podcastsData!}
-          imageUrl={user?.imageUrl!}
-          userFirstName={user?.name!}
+          podcastData={{
+            ...podcastsData,
+            podcasts: podcastsData.podcasts.map((podcast) => ({
+              ...podcast,
+              audioUrl: podcast.audioUrl ?? "",
+              imageUrl: podcast.imageUrl ?? "",
+            })),
+          }}
+          imageUrl={user?.imageUrl ?? ""}
+          userFirstName={user?.name ?? ""}
         />
       </div>
       <section className="mt-9 flex flex-col gap-5">
@@ -45,7 +52,7 @@ const ProfilePage = ({
               .map((podcast) => (
                 <PodcastCard
                   key={podcast._id}
-                  imgURL={podcast.imageUrl!}
+                  imgUrl={podcast.imageUrl!}
                   title={podcast.podcastTitle!}
                   description={podcast.podcastDescription}
                   podcastId={podcast._id}

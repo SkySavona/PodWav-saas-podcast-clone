@@ -55,7 +55,14 @@ const PodcastDetails = ({
       <PodcastDetailPlayer
         isOwner={isOwner}
         podcastId={podcast._id}
-        {...podcast}
+        audioUrl={podcast.audioUrl || ""}
+        podcastTitle={podcast.podcastTitle}
+        author={podcast.author}
+        imageUrl={podcast.imageUrl || ""}
+        authorImageUrl={podcast.authorImageUrl || ""}
+        authorId={podcast.authorId}
+        imageStorageId={podcast.imageStorageId ?? ("" as Id<"_storage">)}
+        audioStorageId={podcast.audioStorageId ?? ("" as Id<"_storage">)}
       />
 
       <p className="text-16 pb-8 pt-[45px] font-medium max-md:text-center text-white-2">
@@ -89,7 +96,7 @@ const PodcastDetails = ({
               ({ _id, podcastTitle, podcastDescription, imageUrl }) => (
                 <PodcastCard
                   key={_id}
-                  imgURL={imageUrl as string}
+                  imgUrl={imageUrl as string}
                   title={podcastTitle}
                   description={podcastDescription}
                   podcastId={_id}

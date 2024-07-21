@@ -21,7 +21,7 @@ const Home = () => {
             ({ _id, podcastTitle, podcastDescription, imageUrl }) => (
               <PodcastCard
                 key={_id}
-                imgURL={imageUrl as string}
+                imgUrl={imageUrl as string}
                 title={podcastTitle}
                 description={podcastDescription} 
                 podcastId={_id}               

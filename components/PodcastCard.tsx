@@ -4,7 +4,7 @@ import { PodcastCardProps } from "@/types";
 import { useRouter } from "next/navigation";
 
 const PodcastCard = ({
-  imgURL,
+  imgUrl,
   title,
   description,
   podcastId,
@@ -23,7 +23,7 @@ const PodcastCard = ({
     <div className="cursor-pointer text-white-1" onClick={handleViews}>
       <figure className="flex flex-col gap-2">
         <Image
-          src={imgURL}
+          src={imgUrl}
           alt={title}
           width={174}
           height={174}

@@ -19,6 +19,8 @@ const ApplyFilter: React.FC<{ onSortChange: (sort: string) => void }> = ({
     onSortChange(sort);
   };
 
+ 
+
   return (
     <div className="mb-4">
       <select
@@ -80,7 +82,7 @@ const Discover = ({
                   ({ _id, podcastTitle, podcastDescription, imageUrl }) => (
                     <PodcastCard
                       key={_id}
-                      imgURL={imageUrl!}
+                      imgUrl={imageUrl as string}
                       title={podcastTitle}
                       description={podcastDescription}
                       podcastId={_id}

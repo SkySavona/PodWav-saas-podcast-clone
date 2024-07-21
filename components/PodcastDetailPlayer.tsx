@@ -1,4 +1,3 @@
-"use client";
 import { useMutation } from "convex/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -6,7 +5,6 @@ import { useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { useAudio } from "@/app/providers/AudioProvider";
 import { PodcastDetailPlayerProps } from "@/types";
-
 import LoaderSpinner from "./LoaderSpinner";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
