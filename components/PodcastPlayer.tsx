@@ -86,7 +86,7 @@ const PodcastPlayer = () => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
-  }, []);
+  }, [volume]);
 
   useEffect(() => {
     const updateCurrentTime = () => {
