@@ -1,6 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-const publicRoutes = ["/", "/sign-up(.*)", "/sign-in(.*)", "/discover(.*)", "/podcast(.*)"];
+const publicRoutes = ["/", "/sign-up(.*)"];
 const isPublicRoute = createRouteMatcher(publicRoutes);
 
 export default clerkMiddleware((auth, req, evt) => {
@@ -9,9 +10,10 @@ export default clerkMiddleware((auth, req, evt) => {
     if (!userId) {
       const signInUrl = new URL('/sign-in', req.url);
       signInUrl.searchParams.set('redirect_url', req.url);
-      return Response.redirect(signInUrl);
+      return NextResponse.redirect(signInUrl);
     }
   }
+  return NextResponse.next();
 });
 
 export const config = {
