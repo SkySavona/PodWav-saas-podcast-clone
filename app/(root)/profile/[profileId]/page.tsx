@@ -25,7 +25,7 @@ const ProfilePage = ({
   if (!user || !podcastsData) return <LoaderSpinner />;
 
   return (
-    <section className="mt-9 flex flex-col">
+    <section className="mt-9 flex flex-col pb-8">
       <h1 className="text-20 font-bold text-white-1 max-md:text-center">
         Podcaster Profile
       </h1>

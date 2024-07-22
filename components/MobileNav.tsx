@@ -8,12 +8,17 @@ import {
 } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
+import { SignedIn, SignedOut, useClerk, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 const MobileNav = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { signOut } = useClerk();
+  const { user } = useUser();
 
   return (
     <section>
@@ -44,11 +49,15 @@ const MobileNav = () => {
                 const isActive =
                   pathname === route || pathname.startsWith(`${route}/`);
 
+                let href = route;
+                if (label === "Profile") {
+                  href = user ? `/profile/${user.id}` : "/sign-in";
+                }
+
                 return (
                   <SheetClose asChild key={route}>
                     <Link
-                      key={label}
-                      href={route}
+                      href={href}
                       className={cn(
                         "flex gap-3 py-4 max-lg:px-4 justify-start hover:text-white-2 transition-color duration-300 ease-in-out",
                         {
@@ -63,6 +72,23 @@ const MobileNav = () => {
                 );
               })}
             </nav>
+            <SignedOut>
+              <SheetClose asChild>
+                <Button asChild className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-12 ml-5">
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+              </SheetClose>
+            </SignedOut>
+            <SignedIn>
+              <SheetClose asChild>
+                <Button
+                  className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-12 ml-5"
+                  onClick={() => signOut(() => router.push("/"))}
+                >
+                  Log Out
+                </Button>
+              </SheetClose>
+            </SignedIn>
           </div>
         </SheetContent>
       </Sheet>

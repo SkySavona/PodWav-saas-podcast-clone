@@ -6,19 +6,20 @@ import { internal } from "./_generated/api";
 import { httpAction } from "./_generated/server";
 
 const handleClerkWebhook = httpAction(async (ctx, request) => {
-  const event = await validateRequest(request);
-  if (!event) {
-    return new Response("Invalid request", { status: 400 });
-  }
-  switch (event.type) {
-    case "user.created":
-      await ctx.runMutation(internal.users.createUser, {
-        clerkId: event.data.id,
-        email: event.data.email_addresses[0].email_address,
-        imageUrl: event.data.image_url,
-        name: event.data.first_name as string,
-      });
-      break;
+  try {
+    const event = await validateRequest(request);
+    if (!event) {
+      return new Response("Invalid request", { status: 400 });
+    }
+    switch (event.type) {
+      case "user.created":
+        await ctx.runMutation(internal.users.createUser, {
+          clerkId: event.data.id,
+          email: event.data.email_addresses[0].email_address,
+          imageUrl: event.data.image_url,
+          name: [event.data.first_name, event.data.last_name].filter(Boolean).join(" ") || null,
+        });
+        break;
     case "user.updated":
       await ctx.runMutation(internal.users.updateUser, {
         clerkId: event.data.id,
@@ -31,10 +32,12 @@ const handleClerkWebhook = httpAction(async (ctx, request) => {
         clerkId: event.data.id as string,
       });
       break;
+    }
+    return new Response(null, { status: 200 });
+  } catch (error) {
+    console.error("Error processing webhook:", error);
+    return new Response("Internal Server Error", { status: 500 });
   }
-  return new Response(null, {
-    status: 200,
-  });
 });
 
 const http = httpRouter();
