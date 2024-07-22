@@ -71,23 +71,24 @@ const MobileNav = () => {
                   </SheetClose>
                 );
               })}
-            </nav>
+          
             <SignedOut>
               <Button
                 asChild
-                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-16 ml-5"
+                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold ml-5"
               >
                 <Link href="/sign-in">Sign In</Link>
               </Button>
             </SignedOut>
             <SignedIn>
               <Button
-                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-16 ml-5"
+                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold ml-5"
                 onClick={() => signOut(() => router.push("/"))}
               >
                 Log Out
               </Button>
             </SignedIn>
+            </nav>
           </div>
         </SheetContent>
       </Sheet>
