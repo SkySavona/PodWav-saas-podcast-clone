@@ -43,7 +43,7 @@ const MobileNav = () => {
             <Image src="/icons/logo.svg" alt="logo" width={30} height={30} />
             <h1 className="text-24 font-extrabold text-white-1 ml-2">PodWav</h1>
           </Link>
-          <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto">
+          <div className="flex h-[calc(100vh-72px)] flex-col justify-between ">
             <nav className="flex h-full flex-col gap-6 text-white-1">
               {sidebarLinks.map(({ route, label, imgURL }) => {
                 const isActive =
@@ -75,14 +75,14 @@ const MobileNav = () => {
             <SignedOut>
               <Button
                 asChild
-                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-12 ml-5"
+                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-16 ml-5"
               >
                 <Link href="/sign-in">Sign In</Link>
               </Button>
             </SignedOut>
             <SignedIn>
               <Button
-                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-12 ml-5"
+                className="text-16 w-3/4 bg-blue-3  text-white-1 font-extrabold mb-16 ml-5"
                 onClick={() => signOut(() => router.push("/"))}
               >
                 Log Out
